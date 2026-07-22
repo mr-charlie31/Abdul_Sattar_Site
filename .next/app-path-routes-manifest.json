@@ -1,0 +1,20 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
+  "/blog/page": "/blog",
+  "/contact/page": "/contact",
+  "/faqs/page": "/faqs",
+  "/locations/abu-dhabi/page": "/locations/abu-dhabi",
+  "/locations/doha/page": "/locations/doha",
+  "/locations/dubai/page": "/locations/dubai",
+  "/locations/page": "/locations",
+  "/locations/riyadh/page": "/locations/riyadh",
+  "/page": "/",
+  "/payment-guide/page": "/payment-guide",
+  "/policies/page": "/policies",
+  "/refunds/page": "/refunds",
+  "/services/page": "/services",
+  "/shop/[id]/page": "/shop/[id]",
+  "/shop/page": "/shop"
+}

@@ -1,0 +1,20 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
+  "/blog/page": "app/blog/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/faqs/page": "app/faqs/page.js",
+  "/locations/abu-dhabi/page": "app/locations/abu-dhabi/page.js",
+  "/locations/doha/page": "app/locations/doha/page.js",
+  "/locations/dubai/page": "app/locations/dubai/page.js",
+  "/locations/page": "app/locations/page.js",
+  "/locations/riyadh/page": "app/locations/riyadh/page.js",
+  "/page": "app/page.js",
+  "/payment-guide/page": "app/payment-guide/page.js",
+  "/policies/page": "app/policies/page.js",
+  "/refunds/page": "app/refunds/page.js",
+  "/services/page": "app/services/page.js",
+  "/shop/[id]/page": "app/shop/[id]/page.js",
+  "/shop/page": "app/shop/page.js"
+}
