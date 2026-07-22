@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 const seoTags = {
   'Qatar — Doha & Cities': [
     '#DOHAcoco', '#DOHAWeeed', '#DOHAVapes', '#DOHAHTC', '#DOHASnow', '#DOHALarycai',
@@ -443,11 +441,7 @@ const seoTags = {
 };
 
 export default function PopularSearchTags() {
-  const [expanded, setExpanded] = useState(false);
-
   const allTags = Object.values(seoTags).flat();
-  const visibleTags = expanded ? allTags : allTags.slice(0, 80);
-
   return (
     <section className="bg-white py-14 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6">

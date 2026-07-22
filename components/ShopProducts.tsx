@@ -12,7 +12,7 @@ export default function ShopProducts() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeLocation, setActiveLocation] = useState('all');
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
-  const { addItem, openCart } = useCart();
+  const { addItem } = useCart();
 
   const locations = useMemo(() => getAllLocations(), []);
   const allProducts = getShopProducts();
