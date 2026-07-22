@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dubaiweeedhub - Premium Products Across Qatar, Dubai, UAE & Saudi Arabia</title>
+<meta name="description" content="Dubaiweeedhub premium products with discreet delivery across Dubai, UAE, Qatar and Saudi Arabia. 150+ locations. 24/7 service.">
+<meta name="keywords" content="Dubaiweedhub, weed Dubai, coco Dubai, vapes Dubai, weed Qatar, weed Doha, weed UAE, weed Saudi Arabia, Gulf weed delivery">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Geist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{geist:['Geist','sans-serif'],pacifico:['Pacifico','cursive']}}}}</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Geist',sans-serif;background:#fff;color:#0a1f12;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit}
+.page{display:none}
+.page.active{display:block}
+@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hp{position:absolute;left:-9999px;opacity:0;pointer-events:none;height:0;width:0;overflow:hidden}
+.animate-slide-in{animation:slideIn 0.3s ease-out}
+.animate-fade-in{animation:fadeInUp 0.5s ease-out forwards}
+.toast{animation:fadeInUp 0.3s ease-out}
+</style>
+</head>
+<body>
+
+<div id="header"></div>
+
+<div id="app">
+<div id="page-home" class="page active"></div>
+<div id="page-shop" class="page"></div>
+<div id="page-product" class="page"></div>
+<div id="page-about" class="page"></div>
+<div id="page-contact" class="page"></div>
+<div id="page-faqs" class="page"></div>
+<div id="page-locations" class="page"></div>
+<div id="page-payment-guide" class="page"></div>
+<div id="page-policies" class="page"></div>
+<div id="page-refunds" class="page"></div>
+<div id="page-blog" class="page"></div>
+<div id="page-services" class="page"></div>
+</div>
+
+<div id="footer"></div>
+
+<div id="cart-overlay" style="display:none;position:fixed;inset:0;z-index:100"></div>
+<div id="toasts" style="position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px"></div>
+
+<script>
+// ===== PRODUCT DATA =====
+const products = [
+  {id:'thc-tablets',name:'THC tablets',displayName:'THC Tablets',location:'Dera Dubai',category:'Medical',price:'$150 - $250',image:'https://readdy.ai/api/search-image?query=Premium%20pharmaceutical%20THC%20tablets%20pills%20in%20blister%20pack%20on%20clean%20pure%20white%20background%2C%20professional%20studio%20product%20photography%20with%20soft%20diffused%20lighting%2C%20elegant%20minimal%20presentation%2C%20white%20seamless%20backdrop%2C%20high-end%20medical%20product%20aesthetic%2C%20sharp%20focus%20crystal%20clear%20details%2C%20commercial%20product%20shot%2C%20clean%20bright%20studio%20setting%2C%20pharmaceutical%20grade%20packaging&width=600&height=600&seq=dxb-white-thc-tablets-v2&orientation=squarish',description:'Premium pharmaceutical-grade THC tablets offering precise and consistent dosing. Each tablet is carefully formulated to provide a reliable experience with predictable effects.',effects:'Gradual onset with long-lasting effects. Provides deep relaxation, mild euphoria, and relief from discomfort.',usage:'Take 1 tablet orally with water. Start with low dose to assess tolerance. Store in cool dry place.'},
+  {id:'coocoo',name:'coocoo or coco',displayName:'Coocoo / Coco',location:'Al Quoz',category:'coocoo',price:'$200 - $400',image:'https://readdy.ai/api/search-image?query=Premium%20white%20crystalline%20powder%20substance%20in%20clear%20glass%20vial%20on%20clean%20pure%20white%20background%2C%20professional%20studio%20product%20photography%20with%20soft%20diffused%20lighting%2C%20elegant%20minimal%20presentation%2C%20white%20seamless%20backdrop%2C%20high-end%20luxury%20product%20aesthetic%2C%20sharp%20focus%20crystal%20clear%20details%2C%20commercial%20product%20shot%2C%20clean%20bright%20studio%20setting%2C%20reflective%20glass%20container&width=600&height=600&seq=dxb-white-coocoo-v2&orientation=squarish',description:'The highest purity product available, sourced from premium suppliers and verified for exceptional quality.',effects:'Intense euphoric onset with heightened energy and alertness. Produces powerful sense of confidence.',usage:'Handle with care. Start with minimal amounts to assess potency. Store in cool dry place.'},
+  {id:'hash',name:'Hash',displayName:'Hash',location:'Hash',category:'Hash',price:'$160 - $590',image:'https://readdy.ai/api/search-image?query=Premium%20dark%20cannabis%20hash%20resin%20block%20on%20clean%20pure%20white%20background%2C%20professional%20studio%20product%20photography%20with%20soft%20diffused%20lighting%2C%20elegant%20minimal%20presentation%2C%20white%20seamless%20backdrop%2C%20high-end%20cannabis%20product%20aesthetic%2C%20sharp%20focus%20showing%20rich%20texture%20and%20trichomes%2C%20commercial%20product%20shot%2C%20clean%20bright%20studio%20setting%2C%20natural%20organic%20material&width=600&height=600&seq=dxb-white-hash-v2&orientation=squarish',description:'Premium quality cannabis hash made from carefully selected strains using traditional and modern extraction methods.',effects:'Deep body relaxation combined with pleasant mental calm. Rich full-bodied experience.',usage:'Can be crumbled and smoked in pipe, mixed with flower, or vaporized. Start small.'},
+  {id:'mahuu-meds-2g',name:'MAHUU Meds 2g',displayName:'MAHUU Meds 2g',location:'Dera Dubai',category:'Vape',price:'$150 - $250',image:'https://readdy.ai/api/search-image?query=Premium%20cannabis%20vape%20cartridge%20with%20golden%20oil%20on%20clean%20pure%20white%20background%2C%20professional%20studio%20product%20photography%20with%20soft%20diffused%20lighting%2C%20elegant%20minimal%20presentation%2C%20white%20seamless%20backdrop%2C%20high-end%20cannabis%20vape%20aesthetic%2C%20sharp%20focus%20showing%20oil%20clarity%20and%20quality%2C%20commercial%20product%20shot%2C%20clean%20bright%20studio%20setting%2C%20modern%20vape%20hardware&width=600&height=600&seq=dxb-white-mahuu-v2&orientation=squarish',description:'Premium medical-grade cannabis vape cartridge containing 2 grams of high-quality cannabis oil.',effects:'Smooth clean vapor with rapid onset. Balanced experience for daytime and evening.',usage:'Attach to standard 510-thread battery. Start with small puffs. Store upright.'},
+  {id:'sativa',name:'Sativa',displayName:'Sativa Strain',location:'Al Quoz',category:'Weed',price:'$160 - $590',image:'https://readdy.ai/api/search-image?query=Premium%20cannabis%20sativa%20buds%20flowers%20with%20vibrant%20green%20color%20and%20orange%20pistils%20on%20clean%20pure%20white%20background%2C%20professional%20studio%20product%20photography%20with%20soft%20diffused%20lighting%2C%20elegant%20minimal%20presentation%2C%20white%20seamless%20backdrop%2C%20high-end%20cannabis%20product%20aesthetic%2C%20sharp%20focus%20showing%20trichomes%20and%20bud%20structure%2C%20commercial%20product%20shot%2C%20clean%20bright%20studio%20setting%2C%20fresh%20natural%20flower&width=600&height=600&seq=dxb-white-sativa-v2&orientation=squarish',description:'Premium Sativa-dominant cannabis flower with uplifting and energizing effects.',effects:'Uplifting energizing creative cerebral high. Promotes focus and sociability.',usage:'Smoke in pipe, roll into joint, or vaporize. Start small to assess potency.'},
+  {id:'tramadol-200mg',name:'Tramadol 200mg',displayName:'Tramadol 200mg',location:'Hash',category:'Pharma',price:'$100 - $180',image:'https://readdy.ai/api/search-image?query=Premium%20pharmaceutical%20pain%20relief%20tablets%20in%20blister%20pack%20on%20clean%20pure%20white%20background%2C%20professional%20studio%20product%20photography%20with%20soft%20diffused%20lighting%2C%20elegant%20minimal%20presentation%2C%20white%20seamless%20backdrop%2C%20high-end%20medical%20product%20aesthetic%2C%20sharp%20focus%20crystal%20clear%20details%2C%20commercial%20product%20shot%2C%20clean%20bright%20studio%20setting%2C%20pharmaceutical%20packaging%20with%20pills&width=600&height=600&seq=dxb-white-tramadol-v2&orientation=squarish',description:'Pharmaceutical-grade pain relief medication providing effective relief for moderate to severe discomfort.',effects:'Effective relief from moderate to severe pain. Onset within 30-60 minutes.',usage:'Take as directed. Swallow whole with water. Do not crush or chew.'},
+  {id:'hybrid',name:'Hybrid',displayName:'Hybrid Strain',location:'Dera Dubai',category:'Weed',price:'$160 - $590',image:'https://readdy.ai/api/search-image?query=Premium%20cannabis%20hybrid%20buds%20flowers%20with%20rich%20green%20purple%20hues%20and%20frosty%20trichomes%20on%20clean%20pure%20white%20background%2C%20professional%20studio%20product%20photography%20with%20soft%20diffused%20lighting%2C%20elegant%20minimal%20presentation%2C%20white%20seamless%20backdrop%2C%20high-end%20cannabis%20product%20aesthetic%2C%20sharp%20focus%20showing%20bud%20density%20and%20crystal%20coverage%2C%20commercial%20product%20shot%2C%20clean%20bright%20studio%20setting&width=600&height=600&seq=dxb-white-hybrid-v2&orientation=squarish',description:'Premium Hybrid cannabis flower offering perfect balance of Indica and Sativa effects.',effects:'Balanced experience combining body relaxation with mental uplift.',usage:'Smoke, vaporize, or use in edibles. Versatile for various methods.'},
+  {id:'hybrid-mix',name:'Hybrid Sativa Indica Mix',displayName:'Hybrid Sativa Indica Mix',location:'Al Quoz',category:'Weed',price:'$160 - $590',image:'https://readdy.ai/api/search-image?query=Premium%20mixed%20cannabis%20strains%20variety%20buds%20assortment%20with%20different%20colors%20shapes%20on%20clean%20pure%20white%20background%2C%20professional%20studio%20product%20photography%20with%20soft%20diffused%20lighting%2C%20elegant%20minimal%20presentation%2C%20white%20seamless%20backdrop%2C%20high-end%20cannabis%20product%20aesthetic%2C%20sharp%20focus%20showing%20strain%20diversity%2C%20commercial%20product%20shot%2C%20clean%20bright%20studio%20setting%2C%20collection%20of%20premium%20flowers&width=600&height=600&seq=dxb-white-mix-v2&orientation=squarish',description:'Premium blend of Hybrid, Sativa, and Indica strains curated for versatile experience.',effects:'Full spectrum experience with access to Sativa energy, Indica relaxation, Hybrid balance.',usage:'Choose strain matching desired effects. Smoke, vaporize, or use as desired.'}
+];
+
+const categories = [
+  {label:'All Products',value:'all'},
+  {label:'Hash',value:'Hash'},
+  {label:'Weed',value:'Weed'},
+  {label:'Vape',value:'Vape'},
+  {label:'Medical',value:'Medical'},
+  {label:'Pharma',value:'Pharma'},
+  {label:'coocoo',value:'coocoo'}
+];
+
+const bestSellerIds = ['hybrid','sativa','mahuu-meds-2g','hash'];
+const allLocations = [...new Set(products.map(p=>p.location))].sort();
+
+// ===== CART SYSTEM =====
+let cartItems = JSON.parse(localStorage.getItem('dubaiweeedhub_cart')||'[]');
+
+function saveCart(){localStorage.setItem('dubaiweeedhub_cart',JSON.stringify(cartItems));updateCartUI();}
+function addToCart(product){
+  const existing = cartItems.find(i=>i.productId===product.id);
+  if(existing){existing.quantity++}else{
+    cartItems.push({productId:product.id,name:product.name,displayName:product.displayName,price:product.price,image:product.image,quantity:1});
+  }
+  saveCart();showToast(product.displayName+' added to cart!');
+}
+function removeFromCart(productId){cartItems=cartItems.filter(i=>i.productId!==productId);saveCart();}
+function updateQuantity(productId,qty){
+  if(qty<1){removeFromCart(productId);return}
+  const item=cartItems.find(i=>i.productId===productId);if(item){item.quantity=qty;saveCart();}
+}
+function clearCart(){cartItems=[];saveCart();}
+function getTotalItems(){return cartItems.reduce((s,i)=>s+i.quantity,0);}
+function updateCartUI(){
+  const total=getTotalItems();
+  const cartBtn=document.getElementById('cart-btn-count');
+  if(cartBtn){cartBtn.textContent=total;cartBtn.style.display=total>0?'flex':'none';}
+  const topCart=document.getElementById('top-cart-count');
+  if(topCart){topCart.textContent=total+' Item'+(total!==1?'s':'');}
+}
+
+function showToast(msg){
+  const t=document.createElement('div');
+  t.className='toast bg-[#1a472a] text-white px-4 py-2.5 rounded-lg shadow-lg text-sm font-medium';
+  t.textContent=msg;
+  document.getElementById('toasts').appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300)},2000);
+}
+
+// ===== ROUTING =====
+function navigateTo(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const target=document.getElementById('page-'+page);
+  if(target){target.classList.add('active');window.scrollTo(0,0);}
+  closeCart();
+}
+
+// ===== CART DRAWER =====
+function openCart(){renderCartDrawer();}
+function closeCart(){document.getElementById('cart-overlay').style.display='none';}
+
+function renderCartDrawer(){
+  const overlay=document.getElementById('cart-overlay');
+  const itemsHtml=cartItems.length===0
+    ?'<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px"><div style="font-size:60px;color:#ddd;margin-bottom:16px"><i class="ri-shopping-cart-2-line"></i></div><h3 style="font-size:18px;font-weight:700;color:#0a1f12;margin-bottom:8px">Your cart is empty</h3><p style="font-size:14px;color:#999;text-align:center;margin-bottom:24px">Browse our products and add items to your cart</p><button onclick="navigateTo(\'shop\');closeCart()" style="background:#1a472a;color:#fff;font-weight:600;padding:10px 30px;border-radius:999px;border:none">Browse Products</button></div>'
+    :cartItems.map(item=>'<div style="display:flex;gap:16px;padding:12px;background:#f8f9f6;border-radius:12px;margin-bottom:12px"><img src="'+item.image+'" alt="'+item.displayName+'" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid #e5e7eb"><div style="flex:1;min-width:0"><h4 style="font-size:14px;font-weight:700;color:#0a1f12;margin-bottom:4px">'+item.displayName+'</h4><p style="font-size:12px;color:#1a472a;font-weight:600;margin-bottom:8px">'+item.price+'</p><div style="display:flex;align-items:center;gap:12px"><div style="display:flex;align-items:center;border:1px solid #e5e7eb;border-radius:999px;background:#fff"><button onclick="updateQuantity(\''+item.productId+'\','+(item.quantity-1)+');renderCartDrawer()" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;background:none;color:#666;font-size:16px">-</button><span style="font-size:14px;font-weight:600;color:#0a1f12;width:32px;text-align:center">'+item.quantity+'</span><button onclick="updateQuantity(\''+item.productId+'\','+(item.quantity+1)+');renderCartDrawer()" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;background:none;color:#666;font-size:16px">+</button></div><button onclick="removeFromCart(\''+item.productId+'\');renderCartDrawer()" style="background:none;border:none;color:#ccc;margin-left:auto;font-size:18px"><i class="ri-delete-bin-line"></i></button></div></div></div>').join('');
+
+  const waText=cartItems.length>0?cartItems.map((item,i)=>(i+1)+'. '+item.displayName+' x'+item.quantity+' \u2014 '+item.price).join('\\n'):'';
+  const waLink=cartItems.length>0?'https://wa.me/03149024871?text='+encodeURIComponent('Hi, I\'d like to order:\\n\\n'+waText+'\\n\\nFrom Dubaiweeedhub'):'#';
+
+  overlay.innerHTML='<div style="position:absolute;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px)" onclick="closeCart()"></div><div style="position:absolute;top:0;right:0;height:100%;width:100%;max-width:420px;background:#fff;box-shadow:-4px 0 30px rgba(0,0,0,0.1);display:flex;flex-direction:column" class="animate-slide-in"><div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid #f0f0f0"><div><h2 style="font-size:18px;font-weight:700;color:#0a1f12">Your Cart</h2><p style="font-size:12px;color:#999;margin-top:2px">'+getTotalItems()+' item'+(getTotalItems()!==1?'s':'')+'</p></div><button onclick="closeCart()" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:none;background:none;color:#666;font-size:20px"><i class="ri-close-line"></i></button></div><div style="flex:1;overflow-y:auto;padding:16px 24px">'+itemsHtml+'</div>'+(cartItems.length>0?'<div style="border-top:1px solid #f0f0f0;padding:20px 24px"><a href="'+waLink+'" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#16a34a;color:#fff;font-weight:700;padding:14px;border-radius:999px;text-decoration:none;box-shadow:0 4px 12px rgba(22,163,74,0.2)"><i class="ri-whatsapp-line" style="font-size:18px"></i> Order via WhatsApp</a><button onclick="clearCart();renderCartDrawer()" style="width:100%;background:none;border:none;color:#999;padding:10px;margin-top:4px;font-size:13px">Clear Cart</button></div>':'')+'</div>';
+  overlay.style.display='block';
+}
+
+// ===== RENDER HEADER =====
+function renderHeader(){
+  const header=document.getElementById('header');
+  header.innerHTML='<div style="background:#1a472a;color:#fff;font-size:12px;padding:8px 0"><div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:24px"><a href="https://wa.me/03149024871" target="_blank" style="display:flex;align-items:center;gap:6px;color:#fff;text-decoration:none"><i class="ri-phone-line"></i> 03149024871</a><a href="mailto:dubaiweeedhub@gmail.com" style="display:flex;align-items:center;gap:6px;color:#fff;text-decoration:none"><i class="ri-mail-line"></i> dubaiweeedhub@gmail.com</a></div><button onclick="openCart()" style="display:flex;align-items:center;gap:4px;color:#fff;background:none;border:none;font-size:12px"><i class="ri-shopping-cart-line"></i> <span id="top-cart-count">0 Items</span></button></div></div><header style="position:sticky;top:0;z-index:50;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05)"><div style="max-width:1280px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between"><a href="#" onclick="navigateTo(\'home\');return false" style="font-size:24px;font-weight:700;color:#1a472a;font-family:\'Pacifico\',cursive;text-decoration:none">Dubaiweeedhub</a><nav style="display:flex;align-items:center;gap:24px"><a href="#" onclick="navigateTo(\'home\');return false" style="color:#555;font-size:14px;font-weight:500;text-decoration:none">Home</a><a href="#" onclick="navigateTo(\'shop\');return false" style="color:#555;font-size:14px;font-weight:500;text-decoration:none">Shop</a><a href="#" onclick="navigateTo(\'about\');return false" style="color:#555;font-size:14px;font-weight:500;text-decoration:none">About</a><a href="#" onclick="navigateTo(\'locations\');return false" style="color:#555;font-size:14px;font-weight:500;text-decoration:none">Locations</a><a href="#" onclick="navigateTo(\'faqs\');return false" style="color:#555;font-size:14px;font-weight:500;text-decoration:none">FAQs</a><a href="#" onclick="navigateTo(\'contact\');return false" style="color:#555;font-size:14px;font-weight:500;text-decoration:none">Contact</a><button onclick="openCart()" style="position:relative;background:none;border:none;color:#0a1f12;font-size:24px"><i class="ri-shopping-cart-2-line"></i><span id="cart-btn-count" style="display:none;position:absolute;top:-2px;right:-6px;background:#1a472a;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center">0</span></button></nav></div></header>';
+  updateCartUI();
+}
+
+// ===== RENDER FOOTER =====
+function renderFooter(){
+  document.getElementById('footer').innerHTML='<footer style="background:#1a472a;color:#fff"><div style="max-width:1280px;margin:0 auto;padding:48px 24px"><div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px"><div><h3 style="font-size:20px;font-weight:700;font-family:\'Pacifico\',cursive;margin-bottom:16px">Dubaiweeedhub</h3><p style="color:rgba(255,255,255,0.6);font-size:13px;line-height:1.6">Your trusted connection for premium products across Qatar, Dubai, UAE, and Saudi Arabia. Discreet delivery throughout 150+ Gulf locations.</p></div><div><h4 style="font-weight:700;font-size:13px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">Quick Links</h4><div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:rgba(255,255,255,0.6)"><a href="#" onclick="navigateTo(\'home\');return false" style="color:rgba(255,255,255,0.6);text-decoration:none">Home</a><a href="#" onclick="navigateTo(\'about\');return false" style="color:rgba(255,255,255,0.6);text-decoration:none">About Us</a><a href="#" onclick="navigateTo(\'shop\');return false" style="color:rgba(255,255,255,0.6);text-decoration:none">Shop</a><a href="#" onclick="navigateTo(\'contact\');return false" style="color:rgba(255,255,255,0.6);text-decoration:none">Contact</a><a href="#" onclick="navigateTo(\'faqs\');return false" style="color:rgba(255,255,255,0.6);text-decoration:none">FAQs</a><a href="#" onclick="navigateTo(\'locations\');return false" style="color:rgba(255,255,255,0.6);text-decoration:none">Locations</a></div></div><div><h4 style="font-weight:700;font-size:13px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">Service Areas</h4><div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:rgba(255,255,255,0.6)"><span>Qatar - Doha, Lusail, Al Wakrah</span><span>Dubai - Jumeirah, Marina, Al Barsha</span><span>UAE - Abu Dhabi, Sharjah, Ajman</span><span>Saudi - Riyadh, Jeddah, Dammam</span><span>150+ Gulf locations</span></div></div><div><h4 style="font-weight:700;font-size:13px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.05em">Contact</h4><div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:rgba(255,255,255,0.6)"><span><i class="ri-whatsapp-line" style="color:#4ade80"></i> 03149024871</span><span><i class="ri-telegram-line" style="color:#4ade80"></i> @dxbcocoo</span><span><i class="ri-mail-line" style="color:#4ade80"></i> dubaiweeedhub@gmail.com</span><span><i class="ri-time-line" style="color:#4ade80"></i> 24/7 Service</span></div></div></div><div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;text-align:center"><p style="color:rgba(255,255,255,0.5);font-size:13px">\u00a9 2026 Dubaiweeedhub - Gulf Plug. All rights reserved.</p></div></div></footer>';
+}
+
+// ===== PRODUCT CARD =====
+function productCard(product){
+  return '<div style="background:#fff;border:1px solid #e5e7eb;overflow:hidden;transition:box-shadow 0.3s" onmouseover="this.style.boxShadow=\'0 4px 20px rgba(0,0,0,0.1)\'" onmouseout="this.style.boxShadow=\'none\'"><a href="#" onclick="navigateTo(\'product\');showProductDetail(\''+product.id+'\');return false" style="display:block"><div style="position:relative;height:224px;overflow:hidden"><img src="'+product.image+'" alt="'+product.displayName+'" style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s" onmouseover="this.style.transform=\'scale(1.1)\'" onmouseout="this.style.transform=\'scale(1)\'"><div style="position:absolute;top:12px;right:12px;background:#fff;color:#1a472a;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;opacity:0;transition:opacity 0.3s" class="view-detail">View Details</div><button onclick="event.preventDefault();event.stopPropagation();addToCart('+JSON.stringify(product).replace(/\'/g,"&apos;")+')" style="position:absolute;bottom:12px;right:12px;width:36px;height:36px;background:#fff;color:#1a472a;border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.1);opacity:0;transition:all 0.3s" class="add-cart-btn"><i class="ri-shopping-cart-2-line"></i></button></div></a><div style="padding:20px"><a href="#" onclick="navigateTo(\'product\');showProductDetail(\''+product.id+'\');return false" style="text-decoration:none"><h3 style="font-size:16px;font-weight:700;color:#0a1f12;margin-bottom:4px">'+product.displayName+'</h3></a><span style="color:#1a472a;font-weight:700;font-size:14px">'+product.price+'</span><p style="font-size:12px;color:#999;margin:4px 0 16px">'+product.location+'</p><div style="display:flex;gap:8px"><a href="https://wa.me/03149024871?text='+encodeURIComponent('Hi, I\'m interested in '+product.displayName+' from Dubaiweeedhub.')+'" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#16a34a;color:#fff;font-size:12px;font-weight:600;padding:10px 0;text-decoration:none"><i class="ri-whatsapp-line"></i> WhatsApp</a><a href="https://t.me/dxbcocoo" target="_blank" style="display:flex;align-items:center;justify-content:center;width:40px;background:#eff6ff;color:#2563eb;text-decoration:none"><i class="ri-telegram-line"></i></a></div></div></div>';
+}
+
+// ===== SHOW PRODUCT DETAIL =====
+function showProductDetail(productId){
+  const p=products.find(x=>x.id===productId);
+  if(!p)return;
+  const page=document.getElementById('page-product');
+  page.innerHTML='<section style="padding:60px 0;background:#fff"><div style="max-width:1280px;margin:0 auto;padding:0 24px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start"><div><img src="'+p.image+'" alt="'+p.displayName+'" style="width:100%;border-radius:0;border:1px solid #e5e7eb"></div><div><h1 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:8px">'+p.displayName+'</h1><p style="font-size:24px;font-weight:700;color:#1a472a;margin-bottom:8px">'+p.price+'</p><p style="font-size:14px;color:#999;margin-bottom:24px"><i class="ri-map-pin-line"></i> '+p.location+'</p><p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:24px">'+p.description+'</p><div style="background:#f8f9f6;border-radius:12px;padding:20px;margin-bottom:24px"><h4 style="font-size:14px;font-weight:700;color:#0a1f12;margin-bottom:8px">Effects</h4><p style="font-size:14px;color:#555;line-height:1.6">'+p.effects+'</p></div><div style="background:#f8f9f6;border-radius:12px;padding:20px;margin-bottom:24px"><h4 style="font-size:14px;font-weight:700;color:#0a1f12;margin-bottom:8px">Usage</h4><p style="font-size:14px;color:#555;line-height:1.6">'+p.usage+'</p></div><div style="display:flex;gap:12px"><button onclick="addToCart('+JSON.stringify(p).replace(/\'/g,"&apos;")+')" style="flex:1;background:#1a472a;color:#fff;font-weight:700;padding:14px 0;border:none;font-size:14px">Add to Cart</button><a href="https://wa.me/03149024871?text='+encodeURIComponent('Hi, I\'m interested in '+p.displayName+' from Dubaiweeedhub.')+'" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:#16a34a;color:#fff;font-weight:700;padding:14px 0;text-decoration:none;font-size:14px"><i class="ri-whatsapp-line"></i> WhatsApp</a></div></div></div></div></section>';
+}
+
+// ===== RENDER PAGES =====
+function renderHomePage(){
+  const bestSellers=bestSellerIds.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+  document.getElementById('page-home').innerHTML=''
+  +'<section style="position:relative;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden">'
+  +'<div style="position:absolute;inset:0;background-image:url(\'https://readdy.ai/api/search-image?query=Dark%20moody%20cannabis%20marijuana%20plant%20leaves%20closeup%20background%2C%20deep%20green%20and%20black%20tones%2C%20mysterious%20atmospheric%20backdrop%20with%20rich%20dark%20green%20gradients%2C%20cinematic%20lighting%20with%20soft%20bokeh%20and%20shadows%2C%20very%20dark%20elegant%20scene%2C%20moody%20premium%20photography%20style%20for%20cannabis%20delivery%20brand%2C%20dramatic%20lighting%20with%20smoke%20wisps%2C%20dark%20background%20with%20deep%20emerald%20green%20foliage&width=1400&height=600&seq=dxb-hero-v2&orientation=landscape\');background-size:cover;background-position:center"></div>'
+  +'<div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,31,18,0.85),rgba(10,31,18,0.75),rgba(10,31,18,0.9))"></div>'
+  +'<div style="position:relative;z-index:10;max-width:800px;margin:0 auto;padding:96px 24px;text-align:center;color:#fff">'
+  +'<h1 style="font-size:42px;font-weight:800;line-height:1.2;margin-bottom:24px">Discreet Weed Delivery Across Qatar, Dubai, UAE & Saudi Arabia</h1>'
+  +'<p style="font-size:16px;color:rgba(255,255,255,0.7);margin-bottom:16px;line-height:1.7">Are you in Qatar, Dubai, UAE, or Saudi Arabia and searching for discreet weed delivery? You\'re in the right place! We offer a seamless and secure platform that guarantees delivery of high-quality THC weed and cannabis products across the Gulf.</p>'
+  +'<p style="font-size:16px;color:rgba(255,255,255,0.7);margin-bottom:40px;line-height:1.7">Whether you\'re in Doha, Dubai, Abu Dhabi, Sharjah, Ajman, Riyadh, Jeddah or anywhere in between \u2014 we deliver to you.</p>'
+  +'<a href="#" onclick="navigateTo(\'shop\');return false" style="display:inline-flex;align-items:center;gap:8px;background:#fff;color:#1a472a;font-weight:700;padding:16px 40px;text-decoration:none;font-size:18px">Order Now</a>'
+  +'</div></section>'
+  +'<section style="background:#f8f9f6;padding:80px 0"><div style="max-width:1280px;margin:0 auto;padding:0 24px"><div style="text-align:center;margin-bottom:48px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:16px">Our Best Sellers</h2><div style="width:96px;height:4px;background:#1a472a;margin:0 auto"></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">'+bestSellers.map(p=>productCard(p)).join('')+'</div></div></section>'
+  +'<section style="background:#fff;padding:80px 0"><div style="max-width:800px;margin:0 auto;padding:0 24px"><div style="margin-bottom:48px"><h2 style="font-size:28px;font-weight:800;color:#0a1f12;margin-bottom:16px">Why Choose Dubaiweeedhub?</h2><div style="width:96px;height:4px;background:#1a472a"></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px"><div style="text-align:center;background:#f8f9f6;border-radius:16px;padding:32px;border:1px solid #eee"><div style="width:64px;height:64px;background:#1a472a;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px"><i class="ri-shield-check-line" style="color:#fff;font-size:24px"></i></div><h3 style="font-size:18px;font-weight:700;color:#0a1f12;margin-bottom:12px">Quality Assured</h3><p style="font-size:14px;color:#666;line-height:1.6">All products carefully selected and undergo strict quality checks.</p></div><div style="text-align:center;background:#f8f9f6;border-radius:16px;padding:32px;border:1px solid #eee"><div style="width:64px;height:64px;background:#1a472a;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px"><i class="ri-truck-line" style="color:#fff;font-size:24px"></i></div><h3 style="font-size:18px;font-weight:700;color:#0a1f12;margin-bottom:12px">Fast & Discreet Delivery</h3><p style="font-size:14px;color:#666;line-height:1.6">Express delivery to your preferred location with complete discretion.</p></div><div style="text-align:center;background:#f8f9f6;border-radius:16px;padding:32px;border:1px solid #eee"><div style="width:64px;height:64px;background:#1a472a;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px"><i class="ri-lock-line" style="color:#fff;font-size:24px"></i></div><h3 style="font-size:18px;font-weight:700;color:#0a1f12;margin-bottom:12px">Privacy Guaranteed</h3><p style="font-size:14px;color:#666;line-height:1.6">Your privacy is our priority. All transactions handled with utmost discretion.</p></div></div></div></section>'
+  +'<section style="background:#f8f9f6;padding:80px 0"><div style="max-width:1280px;margin:0 auto;padding:0 24px"><div style="text-align:center;margin-bottom:48px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:16px">What Our Customers Say</h2><div style="width:96px;height:4px;background:#1a472a;margin:0 auto"></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px">'+[{name:'Sarah Johnson',loc:'Ahlam Al Shamsi',text:'Dubaiweeedhub has been my go-to source across the Gulf. The delivery is always discreet and on time, and their customer support is exceptional. Highly recommended!',img:'https://readdy.ai/api/search-image?query=Professional%20portrait%20of%20a%20young%20Arab%20woman%20with%20dark%20hair%2C%20elegant%20headscarf%2C%20warm%20smile%2C%20soft%20studio%20lighting%2C%20neutral%20background%2C%20high-end%20photography%20style%2C%20premium%20quality%20portrait%2C%20beautiful%20and%20confident%20expression%2C%20dark%20background%20with%20subtle%20warm%20tones%2C%20professional%20headshot%20aesthetic&width=100&height=100&seq=dxb-t1-v2&orientation=squarish'},{name:'Robert Wilson',loc:'Nawal El Zoghbi',text:'The quality of products from Dubaiweeedhub is consistently excellent. I appreciate their attention to detail and discreet packaging. Best service in Dubai, Doha and beyond!',img:'https://readdy.ai/api/search-image?query=Professional%20portrait%20of%20a%20middle-aged%20Arab%20businessman%20with%20a%20neat%20beard%2C%20confident%20expression%2C%20wearing%20a%20suit%2C%20soft%20studio%20lighting%2C%20dark%20neutral%20background%2C%20high-end%20photography%20style%2C%20premium%20quality%20portrait%2C%20dark%20background%20with%20subtle%20warm%20tones%2C%20professional%20headshot%20aesthetic&width=100&height=100&seq=dxb-t2-v2&orientation=squarish'},{name:'Emily Chen',loc:'Amr Diab',text:'The customer service is fantastic! I was able to get recommendations and place my order quickly. The delivery was prompt and discreet across multiple Gulf cities.',img:'https://readdy.ai/api/search-image?query=Professional%20portrait%20of%20a%20young%20Asian%20woman%20with%20elegant%20style%2C%20warm%20smile%2C%20soft%20studio%20lighting%2C%20neutral%20background%2C%20high-end%20photography%20style%2C%20premium%20quality%20portrait%2C%20beautiful%20and%20confident%20expression%2C%20dark%20background%20with%20subtle%20warm%20tones%2C%20professional%20headshot%20aesthetic&width=100&height=100&seq=dxb-t3-v2&orientation=squarish'}].map(t=>'<div style="background:#fff;border-radius:12px;padding:32px;border:1px solid #e5e7eb"><div style="color:#f59e0b;margin-bottom:20px">'+Array(5).fill('<i class="ri-star-fill"></i>').join('')+' <span style="color:#0a1f12;font-weight:700;font-size:13px;margin-left:8px">5 Star Rating</span></div><p style="font-size:14px;color:#555;line-height:1.7;margin-bottom:24px;font-style:italic">&ldquo;'+t.text+'&rdquo;</p><div style="display:flex;align-items:center;gap:12px"><img src="'+t.img+'" alt="'+t.name+'" style="width:48px;height:48px;border-radius:50%;object-fit:cover"><div><div style="font-weight:700;color:#0a1f12;font-size:14px">'+t.name+'</div><div style="font-size:12px;color:#999">'+t.loc+'</div></div></div></div>').join('')+'</div></div></section>'
+  +'<section style="background:#1a472a;padding:80px 0"><div style="max-width:1280px;margin:0 auto;padding:0 24px;text-align:center"><h2 style="font-size:32px;font-weight:800;color:#fff;margin-bottom:16px">Buy Weed Online Across the Gulf: Safe & Easy</h2><p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.7;max-width:800px;margin:0 auto 40px">Finding where to get weed in Qatar, Dubai, UAE, and Saudi Arabia shouldn\'t be complicated. We specialize in discreet weed delivery across the Gulf, ensuring every package is smell-proof, unmarked, and delivered directly to your door.</p><a href="#" onclick="navigateTo(\'shop\');return false" style="display:inline-flex;align-items:center;gap:8px;background:#fff;color:#1a472a;font-weight:700;padding:16px 40px;text-decoration:none;font-size:16px">Shop Now</a></div></section>'
+  +renderDeliveryAreasHTML();
+}
+
+function renderShopPage(){
+  document.getElementById('page-shop').innerHTML='<section style="background:#fff;padding:80px 0"><div style="max-width:1280px;margin:0 auto;padding:0 24px"><div style="text-align:center;margin-bottom:48px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:16px">Shop Our Products</h2><div style="width:96px;height:4px;background:#1a472a;margin:0 auto"></div></div><div id="shop-filters" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:48px">'+categories.map(c=>'<button onclick="filterShop(\''+c.value+'\')" class="shop-filter-btn" data-cat="'+c.value+'" style="padding:10px 24px;border-radius:999px;font-weight:600;font-size:14px;border:1px solid #e5e7eb;background:#fff;color:#555">'+c.label+'</button>').join('')+'</div><div id="shop-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">'+products.map(p=>productCard(p)).join('')+'</div></div></section>';
+  highlightActiveFilter('all');
+}
+
+function filterShop(cat){
+  const grid=document.getElementById('shop-grid');
+  const filtered=cat==='all'?products:products.filter(p=>p.category===cat);
+  grid.innerHTML=filtered.map(p=>productCard(p)).join('');
+  highlightActiveFilter(cat);
+}
+
+function highlightActiveFilter(cat){
+  document.querySelectorAll('.shop-filter-btn').forEach(b=>{
+    if(b.dataset.cat===cat){b.style.background='#1a472a';b.style.color='#fff';b.style.borderColor='#1a472a'}
+    else{b.style.background='#fff';b.style.color='#555';b.style.borderColor='#e5e7eb'}
+  });
+}
+
+function renderAboutPage(){
+  document.getElementById('page-about').innerHTML='<section style="background:#fff;padding:80px 0"><div style="max-width:1280px;margin:0 auto;padding:0 24px"><div style="text-align:center;margin-bottom:60px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:12px">About Dubaiweeedhub</h2><div style="width:96px;height:4px;background:#1a472a;margin:0 auto"></div><p style="color:#666;margin-top:16px">Your Trusted Partner Across Qatar, Dubai, UAE & Saudi Arabia</p></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:60px"><div style="border-radius:12px;overflow:hidden;height:400px"><img src="https://readdy.ai/api/search-image?query=Premium%20dark%20luxury%20Qatar%20service%20delivery%20concept%20with%20premium%20packaging%2C%20deep%20green%20and%20black%20tones%2C%20mysterious%20atmospheric%20scene%20with%20delivery%20elements%2C%20moody%20dark%20green%20gradient%20background%2C%20professional%20premium%20service%20brand%20photography%20style%2C%20elegant%20and%20sophisticated%20with%20gold%20accents%2C%20cinematic%20lighting%20with%20soft%20shadows%2C%20very%20dark%20and%20luxurious%20atmosphere%2C%20premium%20boxes%20and%20products%20on%20dark%20background&width=600&height=400&seq=dxb-about-page-qatar-v1&orientation=landscape" alt="Dubaiweeedhub" style="width:100%;height:100%;object-fit:cover"></div><div><h3 style="font-size:24px;font-weight:800;color:#0a1f12;margin-bottom:16px">Your Trusted Connection Across the Gulf</h3><p style="font-size:14px;color:#666;line-height:1.7;margin-bottom:24px">Dubaiweeedhub was founded with a simple mission: to provide access to premium quality products with convenience and discretion across Qatar, Dubai, UAE, and Saudi Arabia. We understand the importance of quality and reliability.</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px"><span style="display:flex;align-items:center;gap:8px;font-size:14px;color:#0a1f12;font-weight:500"><span style="width:8px;height:8px;background:#1a472a;border-radius:50%"></span> Premium Quality</span><span style="display:flex;align-items:center;gap:8px;font-size:14px;color:#0a1f12;font-weight:500"><span style="width:8px;height:8px;background:#1a472a;border-radius:50%"></span> Fast Gulf Delivery</span><span style="display:flex;align-items:center;gap:8px;font-size:14px;color:#0a1f12;font-weight:500"><span style="width:8px;height:8px;background:#1a472a;border-radius:50%"></span> 150+ Locations</span><span style="display:flex;align-items:center;gap:8px;font-size:14px;color:#0a1f12;font-weight:500"><span style="width:8px;height:8px;background:#1a472a;border-radius:50%"></span> 24/7 Support</span></div><a href="https://wa.me/03149024871" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#1a472a;color:#fff;font-weight:600;padding:12px 28px;text-decoration:none;font-size:14px"><i class="ri-whatsapp-line"></i> Contact on WhatsApp</a></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px">'+[{icon:'ri-shield-star-line',val:'Premium',lbl:'Quality Products'},{icon:'ri-truck-line',val:'Fast',lbl:'Gulf Delivery'},{icon:'ri-map-pin-line',val:'150+',lbl:'Locations'},{icon:'ri-customer-service-2-line',val:'24/7',lbl:'Support'}].map(s=>'<div style="text-align:center;background:#f8f9f6;border-radius:12px;padding:24px;border:1px solid #e5e7eb"><div style="width:48px;height:48px;background:#1a472a;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i class="'+s.icon+'" style="color:#fff;font-size:20px"></i></div><div style="font-size:24px;font-weight:800;color:#0a1f12">'+s.val+'</div><div style="font-size:13px;color:#666;margin-top:4px">'+s.lbl+'</div></div>').join('')+'</div></div></section>';
+}
+
+function renderContactPage(){
+  document.getElementById('page-contact').innerHTML='<section style="background:#fff;padding:80px 0"><div style="max-width:1280px;margin:0 auto;padding:0 24px"><div style="text-align:center;margin-bottom:60px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:12px">Contact Us</h2><p style="color:#666">Reach out for orders and inquiries across Qatar, Dubai, UAE & Saudi Arabia</p></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:48px"><div><h3 style="font-size:20px;font-weight:700;color:#0a1f12;margin-bottom:24px">Send Us a Message</h3><form onsubmit="handleContactSubmit(event)" style="display:flex;flex-direction:column;gap:16px"><input type="text" name="name" required placeholder="Your full name" style="padding:12px 16px;border:1px solid #e5e7eb;border-radius:12px;font-size:14px;outline:none"><input type="tel" name="phone" required placeholder="+971 XX XXX XXXX" style="padding:12px 16px;border:1px solid #e5e7eb;border-radius:12px;font-size:14px;outline:none"><input type="email" name="email" required placeholder="your.email@example.com" style="padding:12px 16px;border:1px solid #e5e7eb;border-radius:12px;font-size:14px;outline:none"><textarea name="message" required rows="4" placeholder="How can we help you?" maxlength="500" style="padding:12px 16px;border:1px solid #e5e7eb;border-radius:12px;font-size:14px;outline:none;resize:none"></textarea><button type="submit" style="background:#1a472a;color:#fff;font-weight:700;padding:14px;border:none;border-radius:12px;font-size:14px">Send Message</button></form><div id="contact-success" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:32px;text-align:center"><div style="width:64px;height:64px;background:#1a472a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><i class="ri-check-line" style="color:#fff;font-size:32px"></i></div><h4 style="font-size:20px;font-weight:700;color:#0a1f12;margin-bottom:8px">Message Sent!</h4><p style="font-size:14px;color:#666">We will get back to you shortly via WhatsApp or email.</p></div></div><div><h3 style="font-size:20px;font-weight:700;color:#0a1f12;margin-bottom:24px">Get in Touch - Available 24/7</h3><div style="display:flex;flex-direction:column;gap:16px">'+[{icon:'ri-whatsapp-line',bg:'#16a34a',title:'WhatsApp / Phone',detail:'03149024871',link:'https://wa.me/03149024871',linkText:'Chat on WhatsApp',linkColor:'#16a34a'},{icon:'ri-telegram-line',bg:'#2563eb',title:'Telegram',detail:'@dxbcocoo',link:'https://t.me/dxbcocoo',linkText:'Fast Response',linkColor:'#2563eb'},{icon:'ri-mail-line',bg:'#1a472a',title:'Email',detail:'dubaiweeedhub@gmail.com',link:null,linkText:null},{icon:'ri-time-line',bg:'#1a472a',title:'Working Hours',detail:'Monday - Sunday: 24/7 Available'}].map(c=>'<div style="display:flex;align-items:flex-start;gap:16px;background:#f8f9f6;border-radius:12px;padding:20px;border:1px solid #e5e7eb"><div style="width:48px;height:48px;background:'+c.bg+';border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="'+c.icon+'" style="color:#fff;font-size:20px"></i></div><div><div style="font-weight:700;color:#0a1f12;font-size:14px">'+c.title+'</div><div style="font-size:13px;color:#666;margin-top:4px">'+c.detail+'</div>'+(c.link?'<a href="'+c.link+'" target="_blank" style="font-size:13px;font-weight:600;color:'+(c.linkColor||'#1a472a')+';margin-top:4px;display:inline-block;text-decoration:underline">'+c.linkText+'</a>':'')+'</div></div>').join('')+'</div></div></div></div></section>';
+}
+
+function handleContactSubmit(e){
+  e.preventDefault();
+  document.querySelector('#page-contact form').style.display='none';
+  document.getElementById('contact-success').style.display='block';
+}
+
+function renderFAQsPage(){
+  const faqs=[
+    {q:'How do I buy weed in Qatar, Dubai, UAE or Saudi Arabia?',a:'Buying weed across the Gulf is easy. Choose your products, checkout securely, and we deliver discreetly anywhere in Qatar, Dubai, UAE and Saudi Arabia.'},
+    {q:'Is your delivery really discreet?',a:'Yes. We specialize in discreet weed delivery across the Gulf using smell-proof, unmarked packages.'},
+    {q:'Where can I get weed in Dubai?',a:'Right here. We offer fast, secure discreet delivery across Dubai including Jumeirah, Al Barsha, Marina, Palm Jumeirah, Al Quoz, JVC, Deira and more.'},
+    {q:'Where can I buy weed in Doha?',a:'We offer quick and safe delivery to anywhere in Doha including The Pearl, Lusail, and all Qatar locations.'},
+    {q:'Do you deliver to Saudi Arabia?',a:'Yes! We deliver across Saudi Arabia including Riyadh, Jeddah, Dammam, Khobar, Makkah, Medina, Taif, and many more cities.'},
+    {q:'What areas do you cover in the UAE?',a:'We deliver across all UAE \u2014 Dubai, Abu Dhabi, Sharjah, Ajman, Al Ain, Fujairah, Ras Al Khaimah, and Umm Al Quwain.'},
+    {q:'How long does delivery take?',a:'Depending on location, most orders arrive within 60 to 90 minutes max across Gulf cities.'},
+    {q:'What products do you offer?',a:'Flower, edibles, THC vapes, CBD vapes, concentrates, CBD, hash, pre-rolls, Snow, Larycai, Ice, LSD, Hashesh, Coco, and more.'}
+  ];
+  var openIdx=0;
+  document.getElementById('page-faqs').innerHTML='<section style="background:#f8f9f6;padding:80px 0"><div style="max-width:800px;margin:0 auto;padding:0 24px"><div style="margin-bottom:48px"><h2 style="font-size:28px;font-weight:800;color:#0a1f12;margin-bottom:16px">Frequently Asked Questions</h2><div style="width:96px;height:4px;background:#1a472a"></div></div><div style="display:flex;flex-direction:column;gap:16px">'+faqs.map((f,i)=>'<div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden"><button onclick="toggleFAQ('+i+')" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:20px;background:none;border:none;text-align:left;font-weight:700;color:#0a1f12;font-size:14px">'+f.q+'<span id="faq-icon-'+i+'" style="color:#1a472a;font-size:18px">'+(i===openIdx?'<i class="ri-subtract-line"></i>':'<i class="ri-add-line"></i>')+'</span></button><div id="faq-answer-'+i+'" style="display:'+(i===openIdx?'block':'none')+';padding:0 20px 20px;font-size:14px;color:#666;line-height:1.7">'+f.a+'</div></div>').join('')+'</div></div></section>';
+}
+
+function toggleFAQ(idx){
+  var ans=document.getElementById('faq-answer-'+idx);
+  var icon=document.getElementById('faq-icon-'+idx);
+  if(!ans)return;
+  if(ans.style.display==='none'){
+    ans.style.display='block';
+    icon.innerHTML='<i class="ri-subtract-line"></i>';
+  }else{
+    ans.style.display='none';
+    icon.innerHTML='<i class="ri-add-line"></i>';
+  }
+}
+
+function renderDeliveryAreasHTML(){
+  const qatar=['Doha','The Pearl','Lusail','Al Wakrah','Mesaieed','Sealine','Inland Sea','Al Khor','Dukhan','Salwa','Al Rayyan','Al Shamal','Umm Salal'];
+  const dubai=['Jumeirah','Al Barsha','Dubai Marina','Palm Jumeirah','Al Quoz','JVC','JVT','Motor City','Business Bay','Downtown','Deira','International City','JLT','Discovery Gardens'];
+  const uae=['Abu Dhabi','Sharjah','Ajman','Al Ain','Fujairah','Ras Al Khaimah','Umm Al Quwain'];
+  const saudi=['Riyadh','Jeddah','Makkah','Medina','Dammam','Al Khobar','Jubail','Taif','Abha','Tabuk','Yanbu','Dhahran'];
+  return '<section style="background:#f8f9f6;padding:80px 0"><div style="max-width:1280px;margin:0 auto;padding:0 24px"><div style="text-align:center;margin-bottom:48px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:16px">Weed Delivery Across Qatar, UAE & Saudi Arabia</h2><div style="width:96px;height:4px;background:#1a472a;margin:0 auto"></div></div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px">'+[
+    {title:'Qatar',flag:'QA',color:'#8a1538',areas:qatar},
+    {title:'Dubai',flag:'AE',color:'#00732f',areas:dubai},
+    {title:'UAE Cities',flag:'AE',color:'#00732f',areas:uae},
+    {title:'Saudi Arabia',flag:'SA',color:'#006c35',areas:saudi}
+  ].map(r=>'<div style="background:#fff;border-radius:12px;padding:24px;border:1px solid #e5e7eb"><h3 style="font-size:16px;font-weight:700;color:#0a1f12;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:8px"><span style="width:20px;height:20px;background:'+r.color+';border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700">'+r.flag+'</span> '+r.title+' <span style="font-size:13px;font-weight:400;color:#999;margin-left:8px">('+r.areas.length+' areas)</span></h3><div style="display:flex;flex-wrap:wrap;gap:8px">'+r.areas.map(a=>'<span style="display:inline-block;background:#f0f7f1;color:#1a472a;font-size:12px;padding:6px 12px;border-radius:999px;border:1px solid rgba(26,71,42,0.1)">'+a+'</span>').join('')+'</div></div>').join('')+'</div></div></section>';
+}
+
+function renderLocationsPage(){
+  document.getElementById('page-locations').innerHTML='<section style="background:#fff;padding:80px 0"><div style="max-width:1280px;margin:0 auto;padding:0 24px"><div style="text-align:center;margin-bottom:60px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:12px">Our Service Locations</h2><div style="width:96px;height:4px;background:#1a472a;margin:0 auto"></div><p style="color:#666;margin-top:16px">We deliver to 150+ locations across Qatar, UAE & Saudi Arabia</p></div>'+[
+    {title:'Qatar',desc:'Doha, The Pearl, Lusail, Al Wakrah, Mesaieed, Sealine, Inland Sea, Al Khor, Dukhan, Salwa, Al Rayyan, Al Shamal, Umm Salal and more.',img:'https://readdy.ai/api/search-image?query=Modern%20Doha%20Qatar%20skyline%20at%20golden%20hour%20with%20dramatic%20sky%20and%20city%20buildings%2C%20luxury%20Gulf%20city%20landscape%2C%20cinematic%20photography%2C%20beautiful%20skyline%20with%20warm%20sunset%20lighting%20reflecting%20on%20buildings%2C%20wide%20angle%20cityscape%20view%2C%20premium%20travel%20editorial%20style%2C%20rich%20golden%20and%20blue%20tones&width=600&height=400&seq=dxb-loc-doha-v1&orientation=landscape'},
+    {title:'Dubai',desc:'Jumeirah, Al Barsha, Dubai Marina, Palm Jumeirah, Al Quoz, JVC, JVT, Motor City, Business Bay, Downtown, Deira, Bur Dubai, International City and more.',img:'https://readdy.ai/api/search-image?query=Modern%20Dubai%20UAE%20skyline%20with%20Burj%20Khalifa%20at%20golden%20hour%2C%20dramatic%20sky%2C%20luxury%20city%20landscape%2C%20cinematic%20photography%2C%20beautiful%20skyline%20with%20warm%20sunset%20lighting%2C%20wide%20angle%20cityscape%20view%2C%20premium%20travel%20editorial%20style%2C%20rich%20golden%20tones&width=600&height=400&seq=dxb-loc-dubai-v1&orientation=landscape'},
+    {title:'Abu Dhabi & UAE',desc:'Abu Dhabi, Sharjah, Ajman, Al Ain, Fujairah, Ras Al Khaimah, Umm Al Quwain and all Emirates with discreet delivery.',img:'https://readdy.ai/api/search-image?query=Modern%20Abu%20Dhabi%20UAE%20skyline%20at%20golden%20hour%20with%20dramatic%20sky%2C%20luxury%20city%20landscape%2C%20cinematic%20photography%2C%20beautiful%20skyline%20with%20warm%20sunset%20lighting%2C%20wide%20angle%20cityscape%20view%2C%20premium%20travel%20editorial%20style%2C%20rich%20golden%20and%20blue%20tones&width=600&height=400&seq=dxb-loc-abudhabi-v1&orientation=landscape'},
+    {title:'Saudi Arabia',desc:'Riyadh, Jeddah, Makkah, Medina, Dammam, Al Khobar, Jubail, Taif, Abha, Tabuk, Yanbu, Dhahran and more cities.',img:'https://readdy.ai/api/search-image?query=Modern%20Riyadh%20Saudi%20Arabia%20skyline%20at%20golden%20hour%20with%20dramatic%20sky%2C%20luxury%20city%20landscape%2C%20cinematic%20photography%2C%20beautiful%20skyline%20with%20warm%20sunset%20lighting%2C%20wide%20angle%20cityscape%20view%2C%20premium%20travel%20editorial%20style%2C%20rich%20golden%20tones&width=600&height=400&seq=dxb-loc-riyadh-v1&orientation=landscape'}
+  ].map(l=>'<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;margin-bottom:48px;background:#f8f9f6;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb"><div style="padding:40px"><h3 style="font-size:24px;font-weight:800;color:#0a1f12;margin-bottom:16px">'+l.title+'</h3><p style="font-size:14px;color:#666;line-height:1.7;margin-bottom:24px">'+l.desc+'</p><a href="https://wa.me/03149024871" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#1a472a;color:#fff;font-weight:600;padding:12px 24px;text-decoration:none;font-size:14px"><i class="ri-whatsapp-line"></i> Order from '+l.title+'</a></div><img src="'+l.img+'" alt="'+l.title+'" style="width:100%;height:300px;object-fit:cover"></div>').join('')+renderDeliveryAreasHTML()+'</div></section>';
+}
+
+function renderPaymentGuide(){
+  document.getElementById('page-payment-guide').innerHTML='<section style="background:#fff;padding:80px 0"><div style="max-width:800px;margin:0 auto;padding:0 24px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:8px;text-align:center">Payment Guide</h2><div style="width:96px;height:4px;background:#1a472a;margin:0 auto 40px"></div><div style="font-size:15px;color:#555;line-height:1.8"><p style="margin-bottom:24px">At Dubaiweeedhub, we offer simple and secure payment options across Qatar, Dubai, UAE and Saudi Arabia. Choose the method that works best for you.</p><h3 style="font-size:20px;font-weight:700;color:#0a1f12;margin-bottom:16px">Payment Methods</h3><div style="display:flex;flex-direction:column;gap:16px;margin-bottom:32px"><div style="background:#f8f9f6;border-radius:12px;padding:20px;border:1px solid #e5e7eb"><h4 style="font-weight:700;color:#0a1f12;margin-bottom:8px">Cash on Delivery</h4><p style="font-size:14px;color:#666">Pay when your order arrives. Available across all locations.</p></div><div style="background:#f8f9f6;border-radius:12px;padding:20px;border:1px solid #e5e7eb"><h4 style="font-weight:700;color:#0a1f12;margin-bottom:8px">Bank Transfer</h4><p style="font-size:14px;color:#666">Secure bank transfer options available. Contact us for details.</p></div></div><p style="margin-bottom:16px">For payment details and assistance, contact us directly:</p><a href="https://wa.me/03149024871" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:#fff;font-weight:700;padding:14px 28px;text-decoration:none;border-radius:12px;font-size:14px"><i class="ri-whatsapp-line"></i> Ask About Payment</a></div></div></section>';
+}
+
+function renderPolicies(){
+  document.getElementById('page-policies').innerHTML='<section style="background:#fff;padding:80px 0"><div style="max-width:800px;margin:0 auto;padding:0 24px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:8px;text-align:center">Our Policies</h2><div style="width:96px;height:4px;background:#1a472a;margin:0 auto 40px"></div><div style="font-size:15px;color:#555;line-height:1.8"><h3 style="font-size:20px;font-weight:700;color:#0a1f12;margin-bottom:16px">Privacy Policy</h3><p style="margin-bottom:24px">Your privacy is our top priority. All customer information is handled with the strictest confidentiality. We never share your personal details with third parties. Orders are processed discreetly and delivery is always in unmarked packaging.</p><h3 style="font-size:20px;font-weight:700;color:#0a1f12;margin-bottom:16px">Delivery Policy</h3><p style="margin-bottom:24px">We deliver across Qatar, Dubai, UAE and Saudi Arabia. Most orders arrive within 60-90 minutes. Delivery is available 24/7. All packages are smell-proof, tamper-proof, and unmarked for your privacy.</p><h3 style="font-size:20px;font-weight:700;color:#0a1f12;margin-bottom:16px">Quality Policy</h3><p style="margin-bottom:24px">All products undergo strict quality checks before delivery. We source from premium suppliers and ensure every product meets our high standards.</p></div></div></section>';
+}
+
+function renderRefunds(){
+  document.getElementById('page-refunds').innerHTML='<section style="background:#fff;padding:80px 0"><div style="max-width:800px;margin:0 auto;padding:0 24px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:8px;text-align:center">Refunds Policy</h2><div style="width:96px;height:4px;background:#1a472a;margin:0 auto 40px"></div><div style="font-size:15px;color:#555;line-height:1.8"><p style="margin-bottom:24px">Customer satisfaction is our priority. If you encounter any issues with your order, please contact us immediately.</p><h3 style="font-size:20px;font-weight:700;color:#0a1f12;margin-bottom:16px">Refund Eligibility</h3><ul style="margin-bottom:24px;padding-left:20px"><li>Product quality issues reported within 24 hours</li><li>Incorrect items delivered</li><li>Missing items from order</li></ul><h3 style="font-size:20px;font-weight:700;color:#0a1f12;margin-bottom:16px">Process</h3><p style="margin-bottom:24px">Contact us via WhatsApp or Telegram with your order details. We will review and process your refund within 24 hours.</p><a href="https://wa.me/03149024871" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:#fff;font-weight:700;padding:14px 28px;text-decoration:none;border-radius:12px;font-size:14px"><i class="ri-whatsapp-line"></i> Request Refund</a></div></div></section>';
+}
+
+function renderBlog(){
+  document.getElementById('page-blog').innerHTML='<section style="background:#fff;padding:80px 0"><div style="max-width:800px;margin:0 auto;padding:0 24px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:8px;text-align:center">Blog</h2><div style="width:96px;height:4px;background:#1a472a;margin:0 auto 40px"></div><p style="font-size:15px;color:#666;line-height:1.8;text-align:center">Coming soon. Stay tuned for updates, tips, and news from Dubaiweeedhub.</p></div></section>';
+}
+
+function renderServices(){
+  document.getElementById('page-services').innerHTML='<section style="background:#fff;padding:80px 0"><div style="max-width:800px;margin:0 auto;padding:0 24px"><h2 style="font-size:32px;font-weight:800;color:#0a1f12;margin-bottom:8px;text-align:center">Our Services</h2><div style="width:96px;height:4px;background:#1a472a;margin:0 auto 40px"></div><div style="font-size:15px;color:#555;line-height:1.8"><p style="margin-bottom:24px">Dubaiweeedhub offers premium discreet delivery services across Qatar, Dubai, UAE and Saudi Arabia.</p><div style="display:flex;flex-direction:column;gap:16px">'+[{title:'Express Delivery',desc:'Most orders arrive within 60-90 minutes across Gulf cities.',icon:'ri-rocket-line'},{title:'24/7 Service',desc:'Available anytime, day or night, including weekends and holidays.',icon:'ri-24-hours-line'},{title:'Discreet Packaging',desc:'All packages are smell-proof, unmarked, and tamper-proof.',icon:'ri-shield-check-line'},{title:'Premium Products',desc:'Carefully selected and quality-checked products from trusted sources.',icon:'ri-star-line'}].map(s=>'<div style="background:#f8f9f6;border-radius:12px;padding:24px;border:1px solid #e5e7eb;display:flex;align-items:flex-start;gap:16px"><div style="width:48px;height:48px;background:#1a472a;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="'+s.icon+'" style="color:#fff;font-size:20px"></i></div><div><h4 style="font-weight:700;color:#0a1f12;margin-bottom:4px">'+s.title+'</h4><p style="font-size:14px;color:#666">'+s.desc+'</p></div></div>').join('')+'</div></div></div></section>';
+}
+
+// ===== SCROLL TO TOP ON NAVIGATE =====
+const origNavigate=navigateTo;
+navigateTo=function(page){
+  origNavigate(page);
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+// ===== INIT =====
+renderHeader();
+renderFooter();
+renderHomePage();
+renderShopPage();
+renderAboutPage();
+renderContactPage();
+renderFAQsPage();
+renderLocationsPage();
+renderPaymentGuide();
+renderPolicies();
+renderRefunds();
+renderBlog();
+renderServices();
+updateCartUI();
+
+document.addEventListener('click',function(e){
+  if(e.target.closest('#cart-overlay')&&!e.target.closest('#cart-overlay > div:last-child')){
+  }
+});
+</script>
+</body>
+</html>
